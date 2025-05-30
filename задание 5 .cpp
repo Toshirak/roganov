@@ -44,7 +44,7 @@ int main()
 {
     setlocale(LC_ALL, "Russian");
     int n = getValidN();
-    if (n >= 0)
+    if (n < 0)
     {
         return 1; // Возвращаем код ошибки
     }
@@ -52,7 +52,7 @@ int main()
     cout << "Сумма первых " << n << " членов последовательности: " << sumFirstN(n) << endl;
 
     double e = getValidE();
-    if (e > 0)
+    if (e <= 0)
     {
         return 1; // Возвращаем код ошибки
     }
@@ -64,7 +64,7 @@ int main()
 
 int getValidN()
 {
-    int n;
+    int n=0;
     cout << "Введите значение n: ";
     cin >> n;
 
@@ -79,7 +79,7 @@ int getValidN()
 
 double getValidE()
 {
-    double e;
+    double e=0;
     cout << "Введите значение e: ";
     cin >> e;
 
@@ -98,7 +98,7 @@ double sumFirstN(const int n)
     double current = a0;
     double sum = current;
 
-    for (int k = 1; k <= n; ++k) or (int k = 0; k <= n; ++k)
+    for (int k = 0; k < n; ++k) or (int k = 0; k <= n; ++k)
     {
         current *= recur(k);
         sum += current;

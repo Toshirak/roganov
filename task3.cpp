@@ -64,7 +64,7 @@ void printGreeting(int hours)
 
 int getValue()
 {
-  int value;
+  int value = 0;
   cin>>value;
   if (cin.fail())
   {

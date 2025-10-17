@@ -4,9 +4,9 @@
 using namespace std;
 
 /**
- * @brief Оператор выбора способа заполнения массива
+ * @brief оператор выбоа способа заполнения массива
  * @param RANDOM = 0 автоматическое заполнение
- * @param MANUALLY = 1 ручное заполнение
+ * @param MANUALLY =1 ручное заполнение
  */
 enum SELECT
 {
@@ -15,97 +15,99 @@ enum SELECT
 };
 
 /**
- * @brief Проверяет размер массива
+ * @brief проверяет размер массива
  * @param n - размер массива
  */
-void checkN(const size_t n);
+void checkN(const int n);
 
 /**
- * @brief Считывает размер массива
- * @return размер массива
+ * @brief считывает размер массива
+ * @return размер массива в беззнаковом типе данных
  */
 size_t getSize();
 
 /**
- * @brief Считывает значение типа int
+ * @brief считывает значение типа int
  * @return считанное значение целочисленное
  */
 int getNumber();
 
 /**
- * @brief Вывод массива на экран
- * @param arr Указатель на массив целых чисел
- * @param n Размер массива
+ * @brief вывод массива на экран
+ * @param arr - массив
+ * @param n - размер массива
  */
-void printArray(const int* arr, const size_t n);
+void printArray(const int* arr, const int n);
 
 /**
- * @brief Заполнение массива автоматически случайными числами в заданном диапазоне
- * @param arr Указатель на массив целых чисел
- * @param n Размер массива
- * @param min Минимальное значение диапазона
- * @param max Максимальное значение диапазона
+ * @brief заполнение массива автоматически случайнвми числами в заданном диапазоне
+ * @param arr - массив
+ * @param n - размер массива
+ * @param min - минимальное значение диапазона значений элементов массива
+ * @param max - максимальное значение диапазона значений элементов массива
  */
-void fillArrayRandom(int* arr, const size_t n, const int min, const int max);
+void fillArrayRandom(int* arr, const int n, const int min, const int max);
 
 /**
- * @brief Проверяет диапазон
- * @param min Минимальное значение диапазона
- * @param max Максимальное значение диапазона
+ * @brief проверяет диапазон
+ * @param min - минимальное значение диапазона значений элементов массива
+ * @param max - максимальное значение диапазона значений элементов массива
  */
 void checkRange(const int min, const int max);
 
 /**
- * @brief Заменяет минимальный элемент массива на среднее арифметическое
- * @param arr Указатель на исходный массив целых чисел
- * @param result Указатель на результирующий массив (копия исходного)
+ * @brief Заменяет минимальный элемент массива на средний, если количество элементов в массиве нечетное
+ * @param arr  Массив целых чисел, в котором будет произведена замена
  * @param n Размер массива
  */
-void replaceMinWithAverage(const int arr[], int result[], const size_t n);
+int replaceMinWithAverage(int arr[], const int n);
 
 /**
- * @brief Проверяет, содержит ли массив две пары соседних элементов с одинаковыми знаками
- * @param arr Указатель на массив целых чисел
- * @param n Количество элементов в массиве
- * @return true если есть две пары, иначе false
+ * @brief проверяет, содержит ли массив две пары соседних элементов с одинаковыми знаками.
+ * @param arr Указатель на массив целых чисел.
+ * @param n Количество элементов в массиве.
+ * @return true, если в массиве есть две пары соседних элементов с одинаковыми знаками, иначе false.
  */
-bool hasTwoPairsWithSameSign(const int arr[], const size_t n);
+bool hasTwoPairsWithSameSign(const int arr[], const int n);
 
 /**
- * @brief Выводит индексы элементов, значения которых больше предыдущих
- * @param arr Указатель на массив целых чисел
- * @param n Количество элементов в массиве
+ * @brief выводит индексы элементов массива, значения которых больше предыдущих элементов.
+ * @param arr Указатель на массив целых чисел.
+ * @param n Количество элементов в массиве.
  */
-void printIndicesGreaterThanPrevious(const int arr[], const size_t n);
+void printIndicesGreaterThanPrevious(const int arr[], const int n);
 
 /**
- * @brief Заполнение массива вручную
- * @param arr Указатель на массив целых чисел
- * @param n Размер массива
- * @param min Минимальное значение диапазона
- * @param max Максимальное значение диапазона
+ * @brief заполнение массива вручную
+ * @param arr - массив
+ * @param n - размер массива
+ * @param min - минимальное значение диапазона значений элементов массива
+ * @param max - максимальное значение диапазона значений элементов массива
  */
-void fillArray(int* arr, const size_t n, const int min, const int max);
+void fillArray(int* arr, const int n, const int min, const int max);
 
+/**
+* @brief точка входа в программу
+* @return 0 - если программма выполнена корректно, инече -1
+*/
 int main()
 {
     setlocale(LC_ALL, "Russian");
-    size_t n = getSize();
+    int n = getSize();
     int* arr = new int[n];
-    int* arrCopy = new int[n]; // Копия массива для изменений
 
     cout << "Введите минимальное и максимальное значение диапазона: ";
     int minValue = getNumber();
     int maxValue = getNumber();
     checkRange(minValue, maxValue);
 
-    cout << "Выберите способ заполнения массива:\n"
-         << RANDOM << " - случайное заполнение\n"
-         << MANUALLY << " - ручное заполнение\n";
-    
+    cout << "Введите выбор для заполнения массива: " << endl
+        << RANDOM << " Для случайного заполнения" << endl
+        << MANUALLY << " Для ручного заполнения" << endl;
+
     int choice = getNumber();
 
-    switch (choice)
+    switch ((SELECT)choice)
     {
     case RANDOM:
         fillArrayRandom(arr, n, minValue, maxValue);
@@ -114,76 +116,62 @@ int main()
         fillArray(arr, n, minValue, maxValue);
         break;
     default:
-        cout << "Неверный выбор" << endl;
-        delete[] arr;
-        delete[] arrCopy;
+        cout << "Ваш выбор неверен" << endl;
         return -1;
     }
 
-    // Копируем исходный массив
-    for (size_t i = 0; i < n; i++) {
-        arrCopy[i] = arr[i];
-    }
-
-    cout << "Исходный массив:" << endl;
+    cout << "Элементы массива:" << endl;
     printArray(arr, n);
 
-    replaceMinWithAverage(arr, arrCopy, n);
-    cout << "Массив после замены минимального элемента на среднее:" << endl;
-    printArray(arrCopy, n);
+    replaceMinWithAverage(arr, n);
+    printArray(arr, n);
 
-    cout << "Индексы элементов, больших предыдущих:" << endl;
     printIndicesGreaterThanPrevious(arr, n);
 
     if (hasTwoPairsWithSameSign(arr, n))
     {
-        cout << "Есть две пары соседних элементов с одинаковыми знаками." << endl;
+        cout << "Есть две пары соседних элементов с одинаковыми знаками.\\n";
     }
     else
     {
-        cout << "Нет двух пар соседних элементов с одинаковыми знаками." << endl;
+        cout << "Две пары соседних элементов с одинаковыми знаками отсутствуют.\\n";
     }
 
-    delete[] arr;
-    delete[] arrCopy;
+    delete[] arr; // Освобождаем память массива
     return 0;
 }
 
-void checkN(const size_t n)
+void checkN(const int n)
 {
     if (n <= 0)
     {
-        cerr << "Неверный размер массива" << endl;
-        exit(1);
+        cout << "Неправильный размер массива" << endl;
+        abort();
     }
 }
 
 size_t getSize()
 {
     cout << "Введите размер массива: ";
-    int n = 0;
+    int n;
     cin >> n;
-    if (n < 0) {
-        cerr << "Размер массива не может быть отрицательным" << endl;
-        exit(1);
-    }
-    checkN(static_cast<size_t>(n));
-    return static_cast<size_t>(n);
+    checkN(n);
+    return (size_t)n;
 }
 
 int getNumber()
 {
-    int number = 0;
+    int number;
     cin >> number;
     if (cin.fail())
     {
-        cerr << "Неверный ввод данных" << endl;
-        exit(1);
+        cout << "Неправильный ввод данных";
+        abort();
     }
     return number;
 }
 
-void printArray(const int* arr, const size_t n)
+void printArray(const int* arr, const int n)
 {
     for (size_t i = 0; i < n; i++)
     {
@@ -191,9 +179,9 @@ void printArray(const int* arr, const size_t n)
     }
 }
 
-void fillArrayRandom(int* arr, const size_t n, const int min, const int max)
+void fillArrayRandom(int* arr, const int n, const int min, const int max)
 {
-    srand(static_cast<unsigned>(time(nullptr)));
+    srand(time(0));
     for (size_t i = 0; i < n; i++)
     {
         arr[i] = rand() % (max - min + 1) + min;
@@ -204,68 +192,75 @@ void checkRange(const int min, const int max)
 {
     if (min > max)
     {
-        cerr << "Неверный диапазон" << endl;
-        exit(1);
+        cout << "Введен неправильный диапазон" << endl;
+        abort();
     }
 }
 
-void replaceMinWithAverage(const int arr[], int result[], const size_t n)
+int replaceMinWithAverage(int arr[], const int n)
 {
-    size_t minIndex = 0;
+    int minIndex = 0;
+
     for (size_t i = 1; i < n; ++i)
     {
-        if (result[i] < result[minIndex])
+        if (arr[i] < arr[minIndex])
         {
             minIndex = i;
         }
     }
 
     int sum = 0;
+
     for (size_t i = 0; i < n; ++i)
     {
         sum += arr[i];
     }
 
-    result[minIndex] = sum / static_cast<int>(n);
+    arr[minIndex] = sum / n;
+
+    cout << "Массив после замены минимального значения на среднее: ";
+    for (size_t i = 0; i < n; ++i)
+    {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
 }
 
-void printIndicesGreaterThanPrevious(const int arr[], const size_t n)
+void printIndicesGreaterThanPrevious(const int arr[], const int n)
 {
     for (size_t i = 1; i < n; ++i)
     {
         if (arr[i] > arr[i - 1])
         {
-            cout << i << " ";
+            cout << "Индекс " << i << ": " << arr[i] << endl;
         }
     }
-    cout << endl;
 }
 
-bool hasTwoPairsWithSameSign(const int arr[], const size_t n)
+bool hasTwoPairsWithSameSign(const int arr[], const int n)
 {
-    if (n < 4) return false;
-
     for (size_t i = 0; i < n - 3; ++i)
     {
-        if ((arr[i] * arr[i + 1] > 0) && (arr[i + 2] * arr[i + 3] > 0))
+        if ((arr[i] * arr[i + 1] > 0 && arr[i + 2] * arr[i + 3] > 0))
         {
             return true;
         }
     }
+
     return false;
 }
 
-void fillArray(int* arr, const size_t n, const int min, const int max)
+void fillArray(int* arr, const int n, const int min, const int max)
 {
     for (size_t i = 0; i < n; i++)
     {
-        cout << "Введите значение для arr[" << i << "]: ";
+        cout << "Enter value for arr[" << i << "]: ";
         arr[i] = getNumber();
 
         if (arr[i] < min || arr[i] > max)
         {
-            cerr << "Значение вне диапазона" << endl;
+            cout << "Значение вне диапазона" << endl;
             i--;
         }
     }
-}
+} 

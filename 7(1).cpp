@@ -1,62 +1,103 @@
 #include <iostream>
-using namespace std;
-int main() {
-    setlocale(0, "rus");
-    int f;
-    int d = 0;
-    //srand(time(0));
-    /*const int N = 9;
-    int arr[N];*/
-    int n;
+#include <limits>
+
+using std::cin;
+using std::cout;
+using std::cerr;
+
+// ---------- работа с памятью ----------
+int* allocateArray(std::size_t n)
+{
+    return new int[n];
+}
+
+void freeArray(int* p) noexcept
+{
+    delete[] p;
+}
+
+// ---------- ввод ----------
+std::size_t readSize()
+{
+    std::size_t n;
     cout << "Введите кол-во элементов: ";
-    cin >> n;
-    int* arr = new int[n];
-
-    for (int i = 0; i < n; i++) {
-        cin >> arr[i];
-        //arr[i] = rand() % 61 - 20; // [0...60] --> [-20...40]
+    if (!(cin >> n) || n == 0) {
+        cerr << "Ошибка ввода: нужно натуральное число.\n";
+        std::exit(EXIT_FAILURE);
     }
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
+    return n;
+}
 
-    // 1.
-    cout << "Найти минимальный элемент массива" << endl;
-    for (int i = 1; i < n; i++) {
-        if (arr[i] < arr[d]) {
-            d = i;
+void readArray(int* arr, std::size_t n)
+{
+    for (std::size_t i = 0; i < n; ++i) {
+        if (!(cin >> arr[i])) {
+            cerr << "Ошибка ввода: ожидалось целое число.\n";
+            std::exit(EXIT_FAILURE);
         }
     }
-    arr[d] = arr[n / 2];
+}
 
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
+// ---------- вывод ----------
+void printArray(const int* arr, std::size_t n)
+{
+    for (std::size_t i = 0; i < n; ++i) cout << arr[i] << ' ';
+    cout << '\n';
+}
 
-    // 2.
+// ---------- алгоритмы ----------
+std::size_t indexOfMin(const int* arr, std::size_t n)
+{
+    if (n == 0) return 0;
+    std::size_t minIdx = 0;
+    for (std::size_t i = 1; i < n; ++i)
+        if (arr[i] < arr[minIdx]) minIdx = i;
+    return minIdx;
+}
+
+void replaceMinByMiddle(int* arr, std::size_t n)
+{
+    arr[indexOfMin(arr, n)] = arr[n / 2];
+}
+
+void printIncreasingIndexes(const int* arr, std::size_t n)
+{
     cout << "indexes: ";
-    for (int i = 1; i < n; i++) {
-        if (arr[i] > arr[i - 1]) {
-            cout << i << " ";
-        }
-    }
-    cout << endl;
-    // 3.
-    cout << " Найти две пары с одинаковыми знаками ";
-    f = 0;
-    for (int g = 1; g < n; g++) {
-        if (arr[g] * arr[g - 1] >= 0) {
-            f++;
-        }
-    }
-    if (f >= 2) {
-        cout << "Две пары есть";
-    }
-    else {
-        cout << "Двух пар нет";
-    }
+    for (std::size_t i = 1; i < n; ++i)
+        if (arr[i] > arr[i - 1]) cout << i << ' ';
+    cout << '\n';
+}
 
-    delete[] arr;
+bool hasTwoEqualSignPairs(const int* arr, std::size_t n)
+{
+    std::size_t pairs = 0;
+    for (std::size_t i = 1; i < n; ++i)
+        if (arr[i] * arr[i - 1] >= 0 && ++pairs == 2) return true;
+    return false;
+}
+
+// ---------- main ----------
+int main()
+{
+    setlocale(LC_ALL, "rus");
+
+    const std::size_t n   = readSize();
+    int* const        arr = allocateArray(n);
+
+    readArray(arr, n);
+    printArray(arr, n);
+
+    // 1. заменить минимальный элемент серединным
+    replaceMinByMiddle(arr, n);
+    printArray(arr, n);
+
+    // 2. индексы, где элемент больше предыдущего
+    printIncreasingIndexes(arr, n);
+
+    // 3. есть ли хотя бы две пары соседей одинакового знака
+    cout << "Две пары с одинаковыми знаками: "
+         << (hasTwoEqualSignPairs(arr, n) ? "есть\n" : "нет\n");
+
+    freeArray(arr);
+    return 0;
 }
